@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Management Praxis — 海报</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+  :root {
+    --bg: #0a0a0f;
+    --gold: #c8a44e;
+    --gold-light: #e8d08a;
+    --gold-dim: #7a6530;
+    --cyan: #3dd8d8;
+    --cyan-dim: rgba(61,216,216,0.15);
+    --white: #f0ece4;
+    --muted: #6b6a65;
+    --serif: 'Noto Serif SC', serif;
+    --sans: 'Noto Sans SC', sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--sans);
+    overflow: hidden;
+  }
+
+  .poster {
+    width: 1200px;
+    height: 630px;
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  /* ── Atmospheric background ── */
+  .poster::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% 60%, rgba(200,164,78,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 600px 400px at 85% 30%, rgba(61,216,216,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 300px 300px at 50% 50%, rgba(200,164,78,0.03) 0%, transparent 70%);
+    z-index: 0;
+  }
+
+  /* ── Grid texture ── */
+  .grid-texture {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(200,164,78,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,164,78,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+  }
+
+  /* ── Noise overlay ── */
+  .noise {
+    position: absolute;
+    inset: 0;
+    opacity: 0.35;
+    z-index: 1;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    background-size: 128px 128px;
+    pointer-events: none;
+  }
+
+  /* ── Top bar ── */
+  .top-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold) 20%, var(--gold) 80%, transparent 100%);
+    z-index: 5;
+  }
+
+  /* ── Left column: branding ── */
+  .left {
+    position: absolute;
+    left: 64px;
+    top: 48px;
+    bottom: 48px;
+    width: 520px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    border: 1px solid rgba(61,216,216,0.25);
+    padding: 6px 14px;
+    border-radius: 2px;
+    width: fit-content;
+    background: rgba(61,216,216,0.05);
+  }
+
+  .badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--cyan);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero-title {
+    margin-top: 20px;
+  }
+
+  .hero-title .en {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 10px;
+  }
+
+  .hero-title h1 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 46px;
+    line-height: 1.15;
+    color: var(--white);
+    letter-spacing: 2px;
+  }
+
+  .hero-title h1 .accent {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-top: 16px;
+    max-width: 440px;
+    letter-spacing: 0.5px;
+  }
+
+  .subtitle strong {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  /* ── Feature pills ── */
+  .features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .pill {
+    font-size: 11.5px;
+    font-weight: 500;
+    padding: 5px 14px;
+    border-radius: 2px;
+    letter-spacing: 0.5px;
+    background: rgba(200,164,78,0.08);
+    border: 1px solid rgba(200,164,78,0.15);
+    color: var(--gold-light);
+  }
+
+  .pill.tech {
+    background: rgba(61,216,216,0.06);
+    border-color: rgba(61,216,216,0.15);
+    color: var(--cyan);
+  }
+
+  /* ── Bottom credits ── */
+  .credits {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .credits .line {
+    width: 32px;
+    height: 1px;
+    background: var(--gold-dim);
+  }
+
+  /* ── Right column: the 204 hero + domains ── */
+  .right {
+    position: absolute;
+    right: 48px;
+    top: 0;
+    bottom: 0;
+    width: 520px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .number-hero {
+    position: relative;
+    text-align: center;
+  }
+
+  .number-hero .big-num {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 180px;
+    line-height: 1;
+    letter-spacing: -6px;
+    background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 40%, var(--gold-dim) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    z-index: 2;
+  }
+
+  .number-hero .big-num-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 320px; height: 160px;
+    background: radial-gradient(ellipse, rgba(200,164,78,0.12) 0%, transparent 70%);
+    z-index: 1;
+    filter: blur(20px);
+  }
+
+  .number-label {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 8px;
+    color: var(--muted);
+    margin-top: -8px;
+  }
+
+  /* ── Domain grid ── */
+  .domains {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin-top: 28px;
+    width: 400px;
+    background: rgba(200,164,78,0.08);
+    border: 1px solid rgba(200,164,78,0.08);
+  }
+
+  .domain {
+    background: var(--bg);
+    padding: 10px 6px;
+    text-align: center;
+    position: relative;
+    transition: background 0.3s;
+  }
+
+  .domain:hover {
+    background: rgba(200,164,78,0.04);
+  }
+
+  .domain .d-icon {
+    font-size: 16px;
+    margin-bottom: 3px;
+    display: block;
+    filter: grayscale(0.3);
+  }
+
+  .domain .d-name {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--white);
+    letter-spacing: 1px;
+  }
+
+  .domain .d-count {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--gold-dim);
+    margin-top: 2px;
+  }
+
+  /* ── Decorative elements ── */
+  .corner-mark {
+    position: absolute;
+    z-index: 5;
+    width: 24px; height: 24px;
+  }
+
+  .corner-mark.tl {
+    top: 20px; left: 20px;
+    border-top: 1px solid var(--gold-dim);
+    border-left: 1px solid var(--gold-dim);
+  }
+
+  .corner-mark.tr {
+    top: 20px; right: 20px;
+    border-top: 1px solid var(--gold-dim);
+    border-right: 1px solid var(--gold-dim);
+  }
+
+  .corner-mark.bl {
+    bottom: 20px; left: 20px;
+    border-bottom: 1px solid var(--gold-dim);
+    border-left: 1px solid var(--gold-dim);
+  }
+
+  .corner-mark.br {
+    bottom: 20px; right: 20px;
+    border-bottom: 1px solid var(--gold-dim);
+    border-right: 1px solid var(--gold-dim);
+  }
+
+  /* ── Center divider ── */
+  .divider {
+    position: absolute;
+    left: 600px;
+    top: 80px;
+    bottom: 80px;
+    width: 1px;
+    background: linear-gradient(180deg, transparent 0%, rgba(200,164,78,0.15) 30%, rgba(200,164,78,0.15) 70%, transparent 100%);
+    z-index: 5;
+  }
+
+  /* ── Workflow line ── */
+  .workflow {
+    position: absolute;
+    bottom: 48px;
+    right: 48px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 1px;
+    color: var(--muted);
+  }
+
+  .workflow .step {
+    padding: 4px 10px;
+    border: 1px solid rgba(200,164,78,0.1);
+    background: rgba(200,164,78,0.03);
+    white-space: nowrap;
+  }
+
+  .workflow .arrow {
+    color: var(--gold-dim);
+    padding: 0 4px;
+    font-size: 10px;
+  }
+
+  /* ── Animated scan line ── */
+  .scanline {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    opacity: 0.2;
+    z-index: 3;
+    animation: scan 6s linear infinite;
+  }
+
+  @keyframes scan {
+    0% { top: 0; }
+    100% { top: 630px; }
+  }
+
+  /* ── Version tag ── */
+  .version {
+    position: absolute;
+    top: 52px;
+    right: 58px;
+    z-index: 10;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--gold-dim);
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <!-- Atmosphere -->
+  <div class="grid-texture"></div>
+  <div class="noise"></div>
+  <div class="scanline"></div>
+  <div class="top-bar"></div>
+
+  <!-- Corner marks -->
+  <div class="corner-mark tl"></div>
+  <div class="corner-mark tr"></div>
+  <div class="corner-mark bl"></div>
+  <div class="corner-mark br"></div>
+
+  <!-- Center divider -->
+  <div class="divider"></div>
+
+  <!-- Version -->
+  <div class="version">v1.1.0</div>
+
+  <!-- Left: Branding -->
+  <div class="left">
+    <div>
+      <div class="badge">Claude Code Skill</div>
+      <div class="hero-title">
+        <div class="en">Management Praxis</div>
+        <h1>
+          <span class="accent">管理工具</span><br>
+          实战顾问
+        </h1>
+      </div>
+      <p class="subtitle">
+        将 <strong>204 个经典管理工具</strong>编码为
+        AI 驱动的分析引擎——从<strong>问题诊断</strong>到<strong>工具匹配</strong>、
+        引导应用，最终生成带可视化图表的分析报告。
+      </p>
+    </div>
+
+    <div>
+      <div class="features">
+        <span class="pill">智能匹配</span>
+        <span class="pill">引导式应用</span>
+        <span class="pill">信心等级</span>
+        <span class="pill tech">ECharts 报告</span>
+        <span class="pill tech">行业模板</span>
+        <span class="pill tech">反模式检测</span>
+      </div>
+    </div>
+
+    <div class="credits">
+      <span class="line"></span>
+      <span>Powered by Claude Code</span>
+    </div>
+  </div>
+
+  <!-- Right: Hero number + domains -->
+  <div class="right">
+    <div class="number-hero">
+      <div class="big-num-glow"></div>
+      <div class="big-num">204</div>
+      <div class="number-label">经 典 管 理 工 具</div>
+    </div>
+
+    <div class="domains">
+      <div class="domain">
+        <span class="d-icon">&#9670;</span>
+        <span class="d-name">战略管理</span>
+        <span class="d-count">18</span>
+      </div>
+      <div class="domain">
+        <span class="d-icon">&#9733;</span>
+        <span class="d-name">领导组织</span>
+        <span class="d-count">17</span>
+      </div>
+      <div class="domain">
+        <span class="d-icon">&#9672;</span>
+        <span class="d-name">创新</span>
+        <span class="d-count">19</span>
+      </div>
+      <div class="domain">
+        <span class="d-icon">&#9638;</span>
+        <span class="d-name">管理体系</span>
+        <span class="d-count">24</span>
+      </div>
+      <div class="domain">
+        <span class="d-icon">&#9881;</span>
+        <span class="d-name">生产质量</span>
+        <span class="d-count">15</span>
+      </div>
+      <div class="domain">
+        <span class="d-icon">&#9823;</span>
+        <span class="d-name">人力资源</span>
+        <span class="d-count">30</span>
+      </div>
+      <div class="domain">
+        <span class="d-icon">&#9830;</span>
+        <span class="d-name">财务管理</span>
+        <span class="d-count">23</span>
+      </div>
+      <div class="domain">
+        <span class="d-icon">&#9758;</span>
+        <span class="d-name">营销</span>
+        <span class="d-count">27</span>
+      </div>
+      <div class="domain">
+        <span class="d-icon">&#9825;</span>
+        <span class="d-name">客户服务</span>
+        <span class="d-count">23</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Workflow bar -->
+  <div class="workflow">
+    <span class="step">诊断</span>
+    <span class="arrow">&#x25B6;</span>
+    <span class="step">匹配</span>
+    <span class="arrow">&#x25B6;</span>
+    <span class="step">应用</span>
+    <span class="arrow">&#x25B6;</span>
+    <span class="step">洞察</span>
+    <span class="arrow">&#x25B6;</span>
+    <span class="step">报告</span>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{REPORT_TITLE}} — Management Praxis</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface-2: #1a1a25;
+    --border: #2a2a3a;
+    --text: #e0e0e8;
+    --text-dim: #8888a0;
+    --accent: #6c8cff;
+    --accent-2: #a78bfa;
+    --green: #4ade80;
+    --yellow: #fbbf24;
+    --red: #f87171;
+    --orange: #fb923c;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 0;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    padding: 60px 40px 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header h1 {
+    font-size: 2.2em;
+    font-weight: 700;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #fff 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header .meta {
+    display: flex;
+    gap: 24px;
+    color: var(--text-dim);
+    font-size: 0.9em;
+  }
+  .header .meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* Container */
+  .container { max-width: 1200px; margin: 0 auto; padding: 40px 40px; }
+
+  /* Section */
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 28px;
+  }
+  .section h2 {
+    font-size: 1.3em;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--accent);
+  }
+  .section h3 {
+    font-size: 1.1em;
+    margin: 20px 0 12px;
+    color: var(--accent-2);
+  }
+
+  /* Charts */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 20px 0;
+  }
+  .chart-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .chart-card h4 {
+    font-size: 0.95em;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .chart { width: 100%; height: 320px; }
+  .chart-wide { width: 100%; height: 380px; }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.92em;
+  }
+  th, td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: var(--surface-2);
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  tr:hover { background: rgba(108, 140, 255, 0.04); }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 600;
+  }
+  .badge-a { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+  .badge-b { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+  .badge-c { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+  .badge-p0 { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+  .badge-p1 { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+  .badge-p2 { background: rgba(108, 140, 255, 0.15); color: var(--accent); }
+
+  /* Conclusion box */
+  .conclusion {
+    background: linear-gradient(135deg, rgba(108, 140, 255, 0.08), rgba(167, 139, 250, 0.08));
+    border: 1px solid rgba(108, 140, 255, 0.3);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .conclusion h3 {
+    color: var(--accent);
+    font-size: 1.4em;
+    margin-bottom: 8px;
+  }
+  .conclusion p { color: var(--text-dim); font-size: 1em; }
+
+  /* Flow */
+  .flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .flow-step {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 0.9em;
+    text-align: center;
+  }
+  .flow-step strong { color: var(--accent); display: block; font-size: 0.8em; }
+  .flow-arrow { color: var(--text-dim); font-size: 1.2em; }
+
+  /* Gate timeline */
+  .gates {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .gate {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+  }
+  .gate::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 40px; height: 3px;
+    border-radius: 0 0 3px 3px;
+  }
+  .gate:nth-child(1)::before { background: var(--green); }
+  .gate:nth-child(2)::before { background: var(--yellow); }
+  .gate:nth-child(3)::before { background: var(--orange); }
+  .gate h4 { font-size: 1em; margin-bottom: 6px; }
+  .gate .time { color: var(--text-dim); font-size: 0.85em; margin-bottom: 10px; }
+  .gate .pass { color: var(--green); font-size: 0.88em; }
+  .gate .fail { color: var(--red); font-size: 0.85em; margin-top: 8px; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 32px;
+    color: var(--text-dim);
+    font-size: 0.85em;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .chart-grid, .gates { grid-template-columns: 1fr; }
+    .header { padding: 32px 20px; }
+    .container { padding: 20px; }
+    .section { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>{{REPORT_TITLE}}</h1>
+  <div class="meta">
+    <span>{{REPORT_DATE}}</span>
+    <span>Management Praxis v1.0</span>
+    <span>使用工具：{{TOOL_COUNT}}个</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 分析框架 -->
+  <div class="section">
+    <h2>分析框架</h2>
+    <div class="flow">
+      {{FLOW_STEPS}}
+    </div>
+  </div>
+
+  <!-- 可视化图表 -->
+  <div class="section">
+    <h2>核心分析</h2>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h4>PEST 宏观环境</h4>
+        <div id="chart-pest" class="chart"></div>
+      </div>
+      <div class="chart-card">
+        <h4>波特五力</h4>
+        <div id="chart-porter" class="chart"></div>
+      </div>
+      <div class="chart-card">
+        <h4>EFE 矩阵</h4>
+        <div id="chart-efe" class="chart"></div>
+      </div>
+      <div class="chart-card">
+        <h4>SWOT 战略矩阵</h4>
+        <div id="chart-swot" class="chart"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 关键发现 -->
+  <div class="section">
+    <h2>关键发现</h2>
+    <table>
+      <thead>
+        <tr><th>#</th><th>发现</th><th>信心</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        {{FINDINGS_ROWS}}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 结论 -->
+  <div class="section">
+    <h2>结论</h2>
+    <div class="conclusion">
+      <h3>{{CONCLUSION_TITLE}}</h3>
+      <p>{{CONCLUSION_DESC}}</p>
+    </div>
+  </div>
+
+  <!-- 行动建议 -->
+  <div class="section">
+    <h2>行动建议</h2>
+    <table>
+      <thead>
+        <tr><th>优先级</th><th>建议</th><th>预期效果</th><th>关键风险</th></tr>
+      </thead>
+      <tbody>
+        {{ACTION_ROWS}}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 决策门控 -->
+  <div class="section">
+    <h2>决策门控</h2>
+    <div class="gates">
+      {{GATE_CARDS}}
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  分析引擎：Management Praxis v1.1
+</div>
+
+<script>
+// ===== Chart configurations are injected here =====
+{{CHART_SCRIPTS}}
+</script>
+</body>
+</html>
