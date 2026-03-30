@@ -1,0 +1,79 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1774892669960,
+  "projectRoot": "/home/gniu/workspace/management-praxis-skill",
+  "techStack": {
+    "languages": [],
+    "frameworks": [],
+    "packageManager": null,
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "docs"
+    ],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 2,
+      "lastAccessed": 1774892669956,
+      "keyFiles": [
+        "poster.html",
+        "quickstart.md"
+      ]
+    },
+    "methodology": {
+      "path": "methodology",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1774892669957,
+      "keyFiles": [
+        "problem-diagnosis.md",
+        "tool-combination.md"
+      ]
+    },
+    "references": {
+      "path": "references",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1774892669957,
+      "keyFiles": [
+        "quality-rules.md",
+        "report-template.html"
+      ]
+    },
+    "templates": {
+      "path": "templates",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1774892669958,
+      "keyFiles": [
+        "manufacturing.md",
+        "professional-services.md",
+        "retail.md",
+        "saas.md"
+      ]
+    }
+  },
+  "hotPaths": [],
+  "userDirectives": []
+}
