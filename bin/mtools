@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Management Praxis API client
+# Usage:
+#   mtools domains          - 列出9大领域
+#   mtools get <domain>     - 获取某领域全部工具 (strategic/leadership/innovation/systems/production/hr/finance/marketing/service)
+#   mtools search <keyword> - 搜索工具
+
+set -euo pipefail
+
+API_BASE="https://mtools.yekki.top:8088"
+API_TOKEN="${MTOOLS_TOKEN:-szlVMTah0_3DqUHHtfPeWx1yfiadSIarJ-LosAQHL4Y}"
+
+VALID_DOMAINS="strategic leadership innovation systems production hr finance marketing service"
+
+_fetch() {
+  curl -sf -H "Authorization: Bearer ${API_TOKEN}" "$1" 2>/dev/null || echo '{"error":"API request failed"}'
+}
+
+_format() {
+  local resp="$1"
+  echo "$resp" | python3 -m json.tool --no-ensure-ascii 2>/dev/null || echo "$resp"
+}
+
+case "${1:-help}" in
+  domains)
+    _format "$(_fetch "${API_BASE}/frameworks")"
+    ;;
+  get)
+    [[ -z "${2:-}" ]] && { echo "Usage: mtools get <domain>"; exit 1; }
+    [[ " $VALID_DOMAINS " != *" $2 "* ]] && { echo "Invalid domain: $2"; echo "Valid: $VALID_DOMAINS"; exit 1; }
+    _format "$(_fetch "${API_BASE}/frameworks/${2}")"
+    ;;
+  search)
+    [[ -z "${2:-}" ]] && { echo "Usage: mtools search <keyword>"; exit 1; }
+    _encoded=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "$2")
+    _format "$(_fetch "${API_BASE}/search?q=${_encoded}")"
+    ;;
+  help|*)
+    echo "mtools - Management Praxis API client"
+    echo ""
+    echo "Commands:"
+    echo "  mtools domains          列出9大领域"
+    echo "  mtools get <domain>     获取某领域全部工具"
+    echo "  mtools search <keyword> 搜索工具"
+    ;;
+esac

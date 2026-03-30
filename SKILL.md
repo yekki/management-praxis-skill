@@ -21,19 +21,17 @@ author: gniu
 
 工具数据通过远程 API 获取，**不要读取本地 frameworks/ 文件**。
 
-**API 配置**：
-- Base URL: `https://mtools.yekki.top:8088`
-- 认证: `Authorization: Bearer szlVMTah0_3DqUHHtfPeWx1yfiadSIarJ-LosAQHL4Y`
+**API 配置**：认证信息已封装在 `bin/mtools` 脚本中，无需手动处理 token。
 
-**接口**：
-- `GET /frameworks` — 获取9大领域列表
-- `GET /frameworks/{domain}` — 获取某领域全部工具内容（domain: strategic/leadership/innovation/systems/production/hr/finance/marketing/service）
-- `GET /search?q=关键词` — 按关键词搜索工具
+**调用方式**：使用 Bash 工具通过 `mtools` 脚本请求 API：
+```bash
+MTOOLS="<skill-base-dir>/bin/mtools"
 
-**调用方式**：使用 WebFetch 工具请求 API，示例：
+$MTOOLS domains          # 列出9大领域
+$MTOOLS get strategic     # 获取某领域全部工具 (strategic/leadership/innovation/systems/production/hr/finance/marketing/service)
+$MTOOLS search SWOT       # 按关键词搜索工具
 ```
-WebFetch(url="https://mtools.yekki.top:8088/frameworks/strategic", headers={"Authorization": "Bearer szlVMTah0_3DqUHHtfPeWx1yfiadSIarJ-LosAQHL4Y"})
-```
+其中 `<skill-base-dir>` 为 skill 加载时提供的 Base directory 路径。
 
 ## 工具库概览（204个工具 × 9大领域）
 
